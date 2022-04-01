@@ -111,7 +111,13 @@ typescript
   - Number
   - String
   - Null
+    - 무언가가 있는데, 사용할 준비가 덜 된 상태
+    - null은 null만 가질 수 있음
+    - typeof 하면 object로 나옴 
   - Undefined
+    - 값을 할당하지 않은 변수는 undefined라는 값을 가진다. 
+    - 아예 준비가 안 된 상태
+    - typeof 하면 undefined 나옴 
   - Symbol
   - Array: object
 
