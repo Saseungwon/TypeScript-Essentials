@@ -129,6 +129,7 @@
       const aBoolean: boolean = maybe;
       const aString: string = maybe; 
     }
+    
 
     if(typeof maybe === "string") {
       const aString: string = maybe;
