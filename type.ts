@@ -129,7 +129,7 @@
       const aBoolean: boolean = maybe;
       const aString: string = maybe; 
     }
-    
+
 
     if(typeof maybe === "string") {
       const aString: string = maybe;
@@ -137,6 +137,7 @@
     }
 
 
+    
 // never
     // never는 모든 타입의 서브타입이며, 모든 타입에 할당할 수 있다. 
     // 하지만 never에는 그 어떤 것도 할당할 수 없다. any도 never에 할당할 수 없다. 
