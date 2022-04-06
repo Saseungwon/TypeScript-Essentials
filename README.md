@@ -270,3 +270,101 @@ let anoter: PersonTuple = ['Anna', 24];
 ```ts
 type EatType = (food: string) => void; 
 ```
+
+
+
+#### TypeScript Context(tsconfig.json)
+
+1. Compilation Context
+일종의 팬시한 용어다. 타입스크립트 파일을 자바스크립트화 시키는데 그 과정에서 타입스크립트의 설정을 가미하는 것이다. 
+어떤 파일을 컴파일 할 것인지, 안 할 것인지 정한다. 
+어떤 컴파일 옵션을 설정할 것인지 적혀있는 context 
+tsconfig.json 파일을 사용한다. 
+
+2. compileOnSave
+  - true/false(default false)
+  - // 파일을 세이브하면 컴파일 시키겠다. 
+
+3. extends
+  - tsconfig.json 파일이 다른 파일을 상속 받고 사용할 수 있다. 
+  - "extends": "./extendsBase.json", // 경로를 적어줌
+
+4. files, include, exclude
+  - 셋다 설정이 없으면, 전부 다 컴파일 하려고 한다. 
+  - files
+    - 상대 혹은 절대 경로의 리스트 배열이다. 
+    - exclude보다 세다. 
+  - include, exclude
+    - glob페턴(마치 .gitignore)
+    - include
+      - exclude보다 약함 
+    - exclude
+      - 설정 안 하면 4가지를 default로 제외
+      - outDir은 항상 제외한다. 
+
+5. compileOptions
+  - typeRoots
+  - types
+    - @types 
+      - 아무 설정 안 하면
+        - node_modules/@types 라는 모든 경로를 찾아서 사용
+      - typeRoots 를 사용하면
+        - 배열 안에 들어있는 경로들 아래에서만 가져온다.
+      - types 를 사용하면
+        - 배열 안의 모듈 혹은 ./node_modules/@types/ 안의 모듈 이름에서 찾아온다. 
+        - [] 빈 배열을 넣은다는 것은 이 시스템을 이용하지 않겠다는 뜻
+      - typeRoots와 types를 같이 사용하지 않는다. 
+
+  - target
+    - 빌드의 결과물을 어떤 버전으로 할 것이냐
+    - 지정을 안 하면 es3로 지정됨
+  - lib
+    - 기본 type definition 라이브러리를 어떤 것을 사용할 것이냐
+    - lib를 지정하지 않을 때,
+      - target이 es3이고 디폴트로 lib.d.ts를 사용
+      - target이 es5이고 디폴트로 dom, es5, scripthost를 사용
+      - target이 es6이고 디폴트로 dom, es6, dom.iterable, scripthost를 사용
+    - lib를 지정하면 그 lib 배열로만 라이브러를 사용한다. 
+      - 빈[] => 'no definition found~'
+
+  - outDir, outFile, rootDir
+  - **strict(무조건 키고 사용하자)** : 엄격하게 타입을 확인하는 옵션을 켠다. 
+    - noImplicitAny
+      - 명시적이지 않게 any타입을 사용하여, 표현식과 선언에 사용하면, 에러를 발생
+      - 타입 스크립트가 추론을 실패한 경우, any가 맞으면 any라고 지정하라.
+      - 아무것도 쓰지 않으면, 에러를 발생
+      - 이 오류를 해결하면, any라고 지정되어 있지 않은 경우는 any가 정말 아닌거다. 타입추론이 된 것이기 때문에 
+
+    - noImplicitThis
+      - 명시적이지 않게 any타입을 사용하여 this 표현식에 사용하면 에러를 발생한다. 
+      - 첫 번째 매개벼수 자리에 this를 놓고 this에 대한 타입을 어떤 것이라도 표현하지 않으면, noImplicitAny가 오류를 발생시킨다. 
+      - js에서는 매개변수에 this를 넣으면 이미 예약된 키워드라 syntaxerror 발생시킨다. 
+      - this를 any로 명시적으로 지정하는 것은 합리적이다.(물론 구체적인 사용처가 있으면 타입을 표현하기도 한다.)
+      - this를 최대한 제한해주는 것이 타입적으로는 안전하게 처리가 될 것이다. 
+    
+    - strictNullChecks
+      - 켜지 않으면 
+        - 모든 타입은 null, undefined 값을 가질 수 있다.
+        - string으로 타입을 지정해도 null, undefined 값을 할당할 수 있다는 것이다. 
+      - 켜면
+        - 모든 타입은 null, undefined 값을 가질 수 없고, 가지려면 union type을 이용해서 직접 명시해야한다.
+        - any 타입은 null, undefined를 가진다. 
+      - strictNullChecks를 적용하지 않으면 null, undefined를 가진다는 것을 암묵적으로 인정하고 사용하기 때문에, 정확히 어떤 타입이 오는 지를 개발자가 스스로 간과할 수 있다. null, undefined를 가질 수 있는 경우 해당 값을 조건부로 제외하고 사용하는 것이 좋다. 
+      - 사용하려는 함수를 선언할 때부터 매개변수와 리턴 값에 정확한 타입을 지정하려는 노력을 기울여야하고, 기울이게 될 것이다. 
+
+    - strictFunctionTypes
+      - 함수 타입에 대한 bivariand 매개변수 검사를 비활성화합니다. 
+      - 반환타입은 공변적이어야 하고, 인자타입은 반공변적이어야 한다. 그런데 타입스크립트에서 인자타입은 공변적이면서, 반공변적인 것이 문제다. 
+      - 이 문제를 해결하는 것이 strictFunctionTypes -> 옵션을 켜면 에러가 안 나던 것을 에러가 생기게 해준다. 
+
+    - strictPropertyInitialization
+      - 정의되지 않은 클래스의 속성이 생성자에게 초기화되었는지 확인한다.
+      - 이 옵션을 사용하려면 -strictNullChecks를 사용하도록 설정해야한다. 
+
+    - strictBindCallApply
+      - bind, call, apply에 대한 더 엄격한 검사 수행 
+
+    - alwaysStrict
+      - 각 소스 파일에 대해 js의 strict mode로 코드를 분석하고, "엄격하게 사용"을 해제한다.
+
+
