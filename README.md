@@ -366,5 +366,3 @@ tsconfig.json 파일을 사용한다.
 
     - alwaysStrict
       - 각 소스 파일에 대해 js의 strict mode로 코드를 분석하고, "엄격하게 사용"을 해제한다.
-
-

@@ -1,4 +1,5 @@
 "use strict";
+// interface에서 함수 만들기
 // 방법1
 const p41 = {
     name: "John",
@@ -15,13 +16,6 @@ const p42 = {
         console.log(`안녕하세요! ${this.name}입니다.`);
     },
 };
-// 방법3
-// const p43: Person4 = {
-//   name: "John",
-//   age: 42,
-//   hello: (this: Person4): void => {
-//     console.log(`안녕하세요! ${this.name}입니다.`);
-//   },
-// }; 
+// 실행
 p41.hello();
 p42.hello();
